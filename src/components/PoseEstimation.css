@@ -1,0 +1,53 @@
+.squat_info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+  }
+  
+  .status {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .status.up {
+    color: limegreen;
+  }
+  
+  .status.down {
+    color: orange;
+  }
+  
+  .count {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .score {
+    font-size: 1.5rem;
+  }
+  
+  @media (max-width: 600px) {
+    .squat_info {
+      width: 150px;
+      padding: 10px;
+    }
+  
+    .status {
+      font-size: 1.5rem;
+    }
+  
+    .count, .score {
+      font-size: 1.2rem;
+    }
+  }
+  
