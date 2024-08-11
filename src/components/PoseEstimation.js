@@ -3,6 +3,7 @@ import * as posedetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import './PoseEstimation.css';
+import guidanceVideoSrc from './assets/guidance.mp4';
 
 var post = "UP"
 
@@ -13,6 +14,7 @@ const PoseEstimation = () => {
   const [count, setCount] = useState(0);
   const [score, setScore] = useState(0);
   const [someCoord, setSomeCoord] = useState([0, 0]);
+  const guidanceVideoRef = useRef(null);
 
   useEffect(() => {
     const runPoseEstimation = async () => {
@@ -25,6 +27,7 @@ const PoseEstimation = () => {
         );
 
         const video = videoRef.current;
+        const guidanceVideo = guidanceVideoRef.current;
 
         const startVideo = () => {
           navigator.mediaDevices.getUserMedia({
@@ -45,6 +48,12 @@ const PoseEstimation = () => {
 
           video.play();
           detectPoses(); // Start pose detection after video is ready
+        };
+
+        guidanceVideo.src = guidanceVideoSrc; // Set the source from imported path
+        guidanceVideo.loop = true
+        guidanceVideo.onloadedmetadata = () => {
+          guidanceVideo.play();
         };
 
         const detectPoses = async () => {
@@ -178,10 +187,17 @@ const PoseEstimation = () => {
   }, [pos, count, score, someCoord]);
 
   return (
-    <div>
-      <video ref={videoRef} style={{ display: 'none' }} />
-      <canvas ref={canvasRef} />
+    <div><h1>Please follow this instruction: </h1>
+    <div className="pose-estimation-container">
+      <div className="pose-estimation">
+        <video ref={videoRef} style={{ display: 'none' }} />
+        <canvas ref={canvasRef} />
+      </div>
+      <div className="video-guidance">
+        <video ref={guidanceVideoRef} controls loop /> {/* Added loop attribute */}
+      </div>
       <SquatInfo pos={pos} count={count} score={score} someCoord={someCoord}/>
+    </div>
     </div>
   );
 };
@@ -189,9 +205,9 @@ const PoseEstimation = () => {
 const SquatInfo = ({ pos, count, score, someCoord }) => {
   return (
     <div className='squat_info'>
-      <h1 className={`status ${pos.toLowerCase()}`}>{pos}</h1>
+      {/* <h1 className={`status ${pos.toLowerCase()}`}>{pos}</h1> */}
       <h1 className='count'>{count} Squats</h1>
-      <h1 className='score'>{score}% Accuracy</h1>
+      <h1 className='score'>{score}% Score</h1>
       {/* {<h1>hip:{someCoord[0]}px knee:{someCoord[1]}px and {someCoord[2]}</h1>} */}
     </div>
   );
