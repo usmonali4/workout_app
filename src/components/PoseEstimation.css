@@ -82,11 +82,26 @@
   
   .video-guidance {
     position: absolute;
-    top: 50px;
+    top: 100px;
     left: 10px;
     margin: 10px;
     max-width: 300px;
     max-height: 400px;
+  }
+
+  @keyframes pop-up {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
   
   .squat_info {
@@ -105,4 +120,11 @@
   
   .status.down {
     color: red;
+  }
+
+  .score {
+    animation: pop-up 0.5s ease-in-out;
+    font-size: 2em; /* Increase the font size for visibility */
+    text-align: center;
+    margin-top: 10px;
   }

@@ -7,6 +7,9 @@ import guidanceVideoSrc from './assets/guidance.mp4';
 
 var post = "UP"
 
+var scores = []
+var count_ = 0
+
 const PoseEstimation = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -153,6 +156,7 @@ const PoseEstimation = () => {
               // console.log(post)
 
               if (post === "UP" &&kneeY < hipY - delta) {
+                count_ = 0;
                 setPos("DOWN");
                 post = "DOWN"
               } 
@@ -170,9 +174,16 @@ const PoseEstimation = () => {
               
               // Convert radians to degrees
               const angleDegrees = angleRadians * (180 / Math.PI);
-              const squatScore = (1 - (angleDegrees)/150)*100;
+              const squatScore = (1 - (angleDegrees)/100)*100;
+              scores.push(squatScore);
+              if(Math.abs(shoulderX - kneeX) < 20 && scores.length !== 0 && count_ === 0){
+                const avg_score = scores.reduce((a,b) => a+b)/scores.length;
+                setScore(Math.round(avg_score));
+                scores = []
+                count_ = 1;
+              }
 
-              setScore(Math.round(squatScore));
+              // setScore(Math.round(squatScore));
             }
           });
         };
@@ -207,7 +218,7 @@ const SquatInfo = ({ pos, count, score, someCoord }) => {
     <div className='squat_info'>
       {/* <h1 className={`status ${pos.toLowerCase()}`}>{pos}</h1> */}
       <h1 className='count'>{count} Squats</h1>
-      <h1 className='score'>{score}% Score</h1>
+      <h1 key={score} className='score'>{score}% Score</h1>
       {/* {<h1>hip:{someCoord[0]}px knee:{someCoord[1]}px and {someCoord[2]}</h1>} */}
     </div>
   );
